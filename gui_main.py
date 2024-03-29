@@ -43,7 +43,8 @@ class CommonOperationUI :
 
         self.tb = ctk.CTkTextbox(app)
         self.tb.grid(row=4, column=0)
-        sys.stdout = self
+        sys.stdout = self # To show print messages
+        sys.stderr = self # To show error messages
 
         self.app = app
         self.btn_connect = btn_connect
