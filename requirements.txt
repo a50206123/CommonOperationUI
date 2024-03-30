@@ -5,3 +5,4 @@ comtypes
 matplotlib
 urllib3
 requests
+customtkinter
