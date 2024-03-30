@@ -1,17 +1,22 @@
 import customtkinter as ctk
 from yc_etabs_api.etabs import ETABS
+import cmd_loading as cmd
 
 class LoadingUI :
     def __init__(self, etabs:ETABS) -> None:
-
         self.etabs = etabs
 
+        self.initUI()
+        
+        self.app.mainloop()
+
+    def initUI(self) :
         ctk.set_appearance_mode('dark') 
         # ctk.set_default_color_theme()
 
         app = ctk.CTk()
         app.geometry('1200x600')
-        app.title('Loading Helper ft. TedChu')
+        app.title('ETABS Loading Faster by YuChen Lin')
 
         label_story_height = ctk.CTkLabel(app, text='Story Height : (m)')
         entry_story_height = ctk.CTkEntry(app)
@@ -53,48 +58,12 @@ class LoadingUI :
         self.label_w_ot = label_w_ot
         self.entry_w_ot = entry_w_ot
         self.btn_loading = []
-
-        app.mainloop()
-
+    
     def calc_load(self) :
-        story_height = float(self.entry_story_height.get())
-        beam_depth = float(self.entry_beam_depth.get())
-        try :
-            t_rc = float(self.entry_t_rc.get())/100
-            w_rc = 2.4
-            haveRC = True
-        except :
-            haveRC = False
-
-        try :
-            t_ot = float(self.entry_t_ot.get())/100
-            w_ot = float(self.entry_w_ot.get())
-            haveOT = True
-        except : 
-            haveOT = False
-
-        clear_height = story_height - beam_depth
-
-        line_loading = lambda w, h, t : w * h * t
-
-        btn_loading_rc = []
-        btn_loading_ot = []
-        commands = []
-
-        for i in range(4) :
-            if haveRC :
-                tmp1 = ctk.CTkButton(self.app, text = f'RC {(i+1)*25}%-{line_loading(w_rc, clear_height, t_rc)*(i+1)*0.25:.3f}')
-                tmp1.grid(row = 5- i, column = 0, pady = 10)
-                btn_loading_rc.append(tmp1)
-            
-            if haveOT :
-                tmp2 = ctk.CTkButton(self.app, text = f'Other {(i+1)*25}%-{line_loading(w_ot, clear_height, t_ot)*(i+1)*0.25:.3f}')
-                tmp2.grid(row =  5- i, column = 1, pady = 10)
-                btn_loading_ot.append(tmp2)
-
-
-        self.btn_loading_rc = btn_loading_rc
-        self.btn_loading_ot = btn_loading_ot
+        cmd.calc_loading(self)
+        
+    def add_loading(self) :
+        cmd.add_loading(self)
 
 if __name__ == '__main__' : 
     pass

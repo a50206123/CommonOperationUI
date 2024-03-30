@@ -3,12 +3,19 @@ import customtkinter as ctk
 import tkinter as tk
 from yc_etabs_api.etabs import ETABS
 from gui_loading import LoadingUI
+from cmd_section import SectionUI
+
 import cmd_main as cmd
 
 class CommonOperationUI :
     def __init__(self) -> None:
         self.etabs = None
 
+        self.initUI()
+        
+        self.app.mainloop()
+    
+    def initUI(self) :
         ctk.set_appearance_mode('dark') 
         # ctk.set_default_color_theme()
 
@@ -24,6 +31,8 @@ class CommonOperationUI :
         app.grid_columnconfigure(0, weight=3)
         app.grid_columnconfigure(1, weight=0)
         app.grid_columnconfigure(2, weight=3)
+
+        frame_0 = ctk.CTkFrame(app)
 
         btn_connect = ctk.CTkButton(app, text="Connect to ETABS", width=600, command=self.connect_etabs)
         btn_connect.grid(row=0, column=0, columnspan = 3, padx=20, pady=(20, 0))
@@ -53,8 +62,13 @@ class CommonOperationUI :
         self.btn_release_ij = btn_release_ij
         self.label_show_path = label_show_path
 
-        app.mainloop()
+        self.Loading = None
     
+    # Callback function for text
+    def write(self, txt) :
+        self.tb.insert(tk.END, txt)     
+        self.tb.see(tk.END)
+        
     def connect_etabs(self) :
         self = cmd.connect_etabs(self)
     
@@ -72,10 +86,6 @@ class CommonOperationUI :
     def open_loading(self) :
         self.Loading = LoadingUI(self.etabs)
 
-    # Callback function for text
-    def write(self, txt) :
-        self.tb.insert(tk.END, txt)     
-        self.tb.see(tk.END)
 
 if __name__ == '__main__' :
     app = CommonOperationUI()

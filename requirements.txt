@@ -1,0 +1,7 @@
+numpy
+pandas
+PyQt5
+comtypes
+matplotlib
+urllib3
+requests

@@ -1,3 +1,4 @@
+import customtkinter as ctk
 from yc_etabs_api.etabs import ETABS
 from show_msg import *
 
@@ -72,13 +73,58 @@ def release_ij(self) :
 
     return self
 
-def reduction_torsion(self, reduction = 0.1) :
+def reduction_torsion(self, reduction = 0.1) : # need to test
+    msg = 'Torsion Constant Reduction'
+    click_msg(msg)
+    
+    self.etabs.model_unlock()
+    
+    frames = self.etabs.Frames.get_name_list(by_unique = False)
+    
+    for frame, story in frames :
+        if frame[0] == 'B' :
+            self.etabs.Frame.set_modifier(frame, T = reduction)
+    
+    self.etabs.refresh()
+    
+    done_msg(msg)
+    
     return self
 
-def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) :
+def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # need to test
+    msg = 'Set Rigidzone'
+    click_msg(msg)
+    
+    self.etabs.model_unlock()
+    
+    frames = self.etabs.Frames.get_name_list()
+    
+    for frame in frames :
+        if self.etabs.Frames.get_section(frame)[0] in frame_prefix :
+            self.etabs.set_rigidzone(frame, rz)
+        else :
+            self.etabs.set_rigidzone(frame, 0.0)
+    
+    done_msg(msg)
+    
     return self
 
-def sb_nonsway(self, frame_prefix = ['F', 'S']) :
+def sb_nonsway(self, frame_prefix = ['F', 'S']) : # need to test
+    msg = 'SBeam and FBeam Nonsway'
+    click_msg(msg)
+    
+    self.etabs.model_unlock()
+    
+    frames = self.etabs.Frames.get_name_list()
+    
+    for frame in frames :
+        if self.etabs.Frames.get_section(frame)[0] in frame_prefix :
+            self.etabs.Design.ConcFrame.set_overwrite('', 0, 0, quick = 'nonsway')
+        else :
+            self.etabs.Design.ConcFrame.set_overwrite('', 0, 0, quick = 'sway')
+    
+    done_msg(msg)
+    
     return self
 
 if __name__ == '__main__' :
