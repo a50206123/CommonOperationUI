@@ -9,11 +9,11 @@ def connect_etabs(self) :
     if self.etabs == None :
             etabs = ETABS()
             self.etabs = etabs
-            self.btn_connect.configure(text = f'Connected to {self.etabs.EDB_name}!!')
-            self.label_show_path.configure(text = f'Path is {self.etabs.EDB_path}')
+            self.btn_connect.configure(text = f"{f' Connected to {self.etabs.EDB_name}!! ':#^70s}")
+            self.label_show_path.configure(text = f'Path : {self.etabs.EDB_path}')
 
     else :
-        self.btn_connect.configure(text = f"Disconnect to {self.etabs.EDB_name}!! Click to connect again !! ")
+        self.btn_connect.configure(text = f'{f" Disconnect to {self.etabs.EDB_name}!! Click to connect again !! ":#^70s}')
         self.etabs = None
 
         self.label_show_path.configure(text = ' ')
@@ -73,7 +73,7 @@ def release_ij(self) :
 
     return self
 
-def reduction_torsion(self, reduction = 0.1) : # need to test
+def reduction_torsion(self, reduction = 0.1) : # OK
     msg = 'Torsion Constant Reduction'
     click_msg(msg)
     
@@ -81,9 +81,12 @@ def reduction_torsion(self, reduction = 0.1) : # need to test
     
     frames = self.etabs.Frames.get_name_list(by_unique = False)
     
-    for frame, story in frames :
-        if frame[0] == 'B' :
-            self.etabs.Frames.set_modifier(frame, T = reduction)
+    for frame, story  in frames :
+        unique = self.etabs.Frames.label2unique(story, frame)
+        J_orig = self.etabs.Frames.get_modifier(unique)[3]
+
+        if frame[0] == 'B' and J_orig != reduction :
+            self.etabs.Frames.set_modifier(unique, T = reduction)
     
     self.etabs.refresh()
     
@@ -91,19 +94,24 @@ def reduction_torsion(self, reduction = 0.1) : # need to test
     
     return self
 
-def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # need to test
+def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # Just Selected frames which need to assign rigidzone
     msg = 'Set Rigidzone'
     click_msg(msg)
     
     self.etabs.model_unlock()
     
     frames = self.etabs.Frames.get_name_list()
-    
+
     for frame in frames :
-        if self.etabs.Frames.get_section(frame)[0] in frame_prefix :
-            self.etabs.set_rigidzone(frame, rz)
-        else :
-            self.etabs.Frames.set_rigidzone(frame, 0.0)
+        rz_orig = self.etabs.Frames.get_rigidzone(frame)
+        sect = self.etabs.Frames.get_section(frame)
+
+        if (sect[0] in frame_prefix) and (rz_orig != rz):
+            self.etabs.Frames.set_selected(frame)
+            # self.etabs.Frames.set_rigidzone(frame, rz)
+        elif not (sect[0] in frame_prefix) and (rz_orig != 0.0):
+            # self.etabs.Frames.set_rigidzone(frame, 0.0)
+            pass
     
     self.etabs.refresh()
     
@@ -111,19 +119,23 @@ def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # need to test
     
     return self
 
-def sb_nonsway(self, frame_prefix = ['F', 'S']) : # need to test
+def sb_nonsway(self, frame_prefix = ['F', 'S']) : # OK
     msg = 'SBeam and FBeam Nonsway'
     click_msg(msg)
     
     self.etabs.model_unlock()
     
-    frames = self.etabs.Frames.get_name_list()
+    frames = self.etabs.Frames.get_name_list(by_unique = False)
     
-    for frame in frames :
-        if self.etabs.Frames.get_section(frame)[0] in frame_prefix :
-            self.etabs.Design.ConcFrame.set_overwrite('', 0, 0, quick = 'nonsway')
-        else :
-            self.etabs.Design.ConcFrame.set_overwrite('', 0, 0, quick = 'sway')
+    for frame, story in frames :
+        unique = self.etabs.Frames.label2unique(story, frame)
+        frame_type = self.etabs.Design.ConcFrame.get_overwrite(unique, 0, quick = 'frame type')
+        sect = self.etabs.Frames.get_section(unique)
+
+        if (sect[0] in frame_prefix) and (frame_type != 'nonsway') :
+            self.etabs.Design.ConcFrame.set_overwrite(unique, 0, 0, quick = 'nonsway')
+        elif not (sect[0] in frame_prefix) and (frame_type != 'sway') :
+            self.etabs.Design.ConcFrame.set_overwrite(unique, 0, 0, quick = 'sway')
     
     self.etabs.refresh()
     
