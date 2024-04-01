@@ -5,6 +5,8 @@ from yc_etabs_api.etabs import ETABS
 from gui_loading import LoadingUI
 # from cmd_section import SectionUI
 
+import threading 
+
 ui_width = 621
 
 import cmd_main as cmd
@@ -94,7 +96,7 @@ class CommonOperationUI :
     
     # Callback function for text
     def write(self, txt) :
-        self.tb.insert(tk.END, txt)     
+        threading.Thread(target=self.tb.insert(tk.END, txt)).start()     
         self.tb.see(tk.END)
         
     def connect_etabs(self) :

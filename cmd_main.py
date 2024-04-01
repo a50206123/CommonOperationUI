@@ -13,7 +13,7 @@ def connect_etabs(self) :
             self.label_show_path.configure(text = f'Path : {self.etabs.EDB_path}')
 
     else :
-        self.btn_connect.configure(text = f'{f" Disconnect to {self.etabs.EDB_name}!! Click to connect again !! ":#^70s}')
+        self.btn_connect.configure(text = f'{f" Disconnect to EABS!! ":#^70s}')
         self.etabs = None
 
         self.label_show_path.configure(text = ' ')
