@@ -3,8 +3,8 @@ from yc_etabs_api.etabs import ETABS
 from show_msg import *
 
 def connect_etabs(self) :
-    msg = 'Connect Button'
-    click_msg(msg)
+    # msg = 'Connect Button'
+    # # done_msg(msg)
 
     if self.etabs == None :
             etabs = ETABS()
@@ -18,13 +18,13 @@ def connect_etabs(self) :
 
         self.label_show_path.configure(text = ' ')
         
-    done_msg(msg)
+    # # done_msg(msg)
 
     return self
 
 def release_i(self) :
     msg = 'Release I-End'
-    click_msg(msg)
+    # done_msg(msg)
 
     self.etabs.model_unlock()
 
@@ -35,13 +35,13 @@ def release_i(self) :
 
     self.etabs.refresh()
 
-    done_msg(msg)
+    # done_msg(msg)
 
     return self
 
 def release_j(self) :
     msg = 'Release J-End'
-    click_msg(msg)
+    # done_msg(msg)
 
     self.etabs.model_unlock()
 
@@ -52,13 +52,13 @@ def release_j(self) :
 
     self.etabs.refresh()
     
-    done_msg(msg)
+    # done_msg(msg)
 
     return self
 
 def release_ij(self) :
     msg = 'Release Both-End'
-    click_msg(msg)
+    # done_msg(msg)
 
     self.etabs.model_unlock()
 
@@ -69,13 +69,13 @@ def release_ij(self) :
 
     self.etabs.refresh()
     
-    done_msg(msg)
+    # done_msg(msg)
 
     return self
 
 def reduction_torsion(self, reduction = 0.1) : # OK
     msg = 'Torsion Constant Reduction'
-    click_msg(msg)
+    # done_msg(msg)
     
     self.etabs.model_unlock()
     
@@ -90,13 +90,13 @@ def reduction_torsion(self, reduction = 0.1) : # OK
     
     self.etabs.refresh()
     
-    done_msg(msg)
+    # done_msg(msg)
     
     return self
 
 def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # Just Selected frames which need to assign rigidzone
     msg = 'Set Rigidzone'
-    click_msg(msg)
+    # done_msg(msg)
     
     self.etabs.model_unlock()
     
@@ -115,19 +115,23 @@ def set_rz(self, rz = 0.5, frame_prefix = ['B', 'C', 'D']) : # Just Selected fra
     
     self.etabs.refresh()
     
-    done_msg(msg)
+    # done_msg(msg)
     
     return self
 
 def sb_nonsway(self, frame_prefix = ['F', 'S']) : # OK
     msg = 'SBeam and FBeam Nonsway'
-    click_msg(msg)
+    # done_msg(msg)
     
     self.etabs.model_unlock()
     
     frames = self.etabs.Frames.get_name_list(by_unique = False)
     
     for frame, story in frames :
+        if self.etabs.Define.Material.get(self.etabs.Frames.get_section(frame))['mat_type'] != 2 :
+            # Not Concrete then SKIP
+            continue
+
         unique = self.etabs.Frames.label2unique(story, frame)
         frame_type = self.etabs.Design.ConcFrame.get_overwrite(unique, 0, quick = 'frame type')
         sect = self.etabs.Frames.get_section(unique)
@@ -139,7 +143,7 @@ def sb_nonsway(self, frame_prefix = ['F', 'S']) : # OK
     
     self.etabs.refresh()
     
-    done_msg(msg)
+    # done_msg(msg)
     
     return self
 

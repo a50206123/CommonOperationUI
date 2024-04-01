@@ -5,7 +5,11 @@ from yc_etabs_api.etabs import ETABS
 from gui_loading import LoadingUI
 # from cmd_section import SectionUI
 
+from yc_etabs_api.apps.change_section import ChangeSection
+
 import threading 
+
+from show_msg import *
 
 ui_width = 621
 
@@ -66,7 +70,7 @@ class CommonOperationUI :
 
         self.btn_reduJ = ctk.CTkButton(self.frame_2_1_2, text="Torsion Reduction", command=self.reduction_torsion, height = 20, width=ui_width/3, font=('consolas',12))
         self.btn_reduJ.grid(row=0, column=0, padx=0, pady=5)
-        self.btn_set_rz = ctk.CTkButton(self.frame_2_1_2, text="Set Rigidzone", command=self.set_rz, height = 20, width=ui_width/3, font=('consolas',12))
+        self.btn_set_rz = ctk.CTkButton(self.frame_2_1_2, text="Select Rigidzone = 0.5", command=self.set_rz, height = 20, width=ui_width/3, font=('consolas',12))
         self.btn_set_rz.grid(row=1, column=0, padx=0, pady=5)
         self.btn_sb_nonsway = ctk.CTkButton(self.frame_2_1_2, text="SB,FB Nonsway", command=self.sb_nonsway, height = 20, width=ui_width/3, font=('consolas',12))
         self.btn_sb_nonsway.grid(row=2, column=0, padx=0, pady=5)
@@ -74,6 +78,12 @@ class CommonOperationUI :
         ##### Frame 2-2
         self.frame_2_2 = ctk.CTkFrame(self.frame_2, width=ui_width/3)
         self.frame_2_2.grid(row=0, column=1)
+
+        self.label_2_2 = ctk.CTkLabel(self.frame_2_2, width = ui_width/3, text = 'Automatic Programs', anchor='n')
+        self.label_2_2.pack(pady = 5, anchor='n')
+
+        self.btn_change_section = ctk.CTkButton(self.frame_2_2, text="Change Sections", command=self.change_section, width=ui_width/3, font=('consolas',12), anchor='n')
+        self.btn_change_section.pack(padx=0, pady=5, anchor='n')
 
         ##### Frame 2-3
         self.frame_2_3 = ctk.CTkFrame(self.frame_2, width=ui_width/3)
@@ -99,32 +109,42 @@ class CommonOperationUI :
         threading.Thread(target=self.tb.insert(tk.END, txt)).start()     
         self.tb.see(tk.END)
         
+    @tic_toc('Connect ETABS') 
     def connect_etabs(self) :
         self = cmd.connect_etabs(self)
     
+    @tic_toc('Release I-End') 
     def release_i(self) :
         self = cmd.release_i(self)
-    
-    
+
+    @tic_toc('Release J-End') 
     def release_j(self) :
         self = cmd.release_j(self)
 
-    
+    @tic_toc('Release Both-End') 
     def release_ij(self) :
         self = cmd.release_ij(self)
 
+    @tic_toc('Torsion Reduction') 
     def reduction_torsion(self) :
         self = cmd.reduction_torsion(self)
 
+    @tic_toc('Select Frames with Rigidzone = 0.5') 
     def set_rz(self) :
         self = cmd.set_rz(self)
     
+    @tic_toc('FBeam/SBeam Nonsway Overwrite') 
     def sb_nonsway(self) :
         self = cmd.sb_nonsway(self)
 
+    @tic_toc('Opening Loading Window') 
     def open_loading(self) :
         self.Loading = LoadingUI(self.etabs)
 
+    @tic_toc('Changing Section')
+    def change_section(self) :
+        changeSect = ChangeSection(self.etabs)
+        changeSect.run()
 
 if __name__ == '__main__' :
     app = CommonOperationUI()
