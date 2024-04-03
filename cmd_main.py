@@ -2,6 +2,8 @@ import customtkinter as ctk
 from yc_etabs_api.etabs import ETABS
 from show_msg import *
 
+from yc_etabs_api.apps.change_section import ChangeSection
+
 def connect_etabs(self) :
     # msg = 'Connect Button'
     # # done_msg(msg)
@@ -145,6 +147,14 @@ def sb_nonsway(self, frame_prefix = ['F', 'S']) : # OK
     
     # done_msg(msg)
     
+    return self
+
+def change_section(self) :
+    changeSect = ChangeSection(self.etabs)
+    changeSect.run()
+
+    self.etabs.refresh()
+
     return self
 
 if __name__ == '__main__' :
