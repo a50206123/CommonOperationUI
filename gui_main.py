@@ -11,7 +11,6 @@ import threading
 from show_msg import *
 
 ui_width = 621
-
 etabs = None
 
 import cmd_main as cmd
@@ -142,7 +141,10 @@ class FrameEtabsConnect(ctk.CTkFrame) :
 class FrameCommonOperation(ctk.CTkFrame) :
     def __init__(self, master, width: int = 200, height: int = 200):
         super().__init__(master, width, height)
-
+        
+        self.initUI()
+        
+    def initUI(self) :
         self.frame = ctk.CTkFrame(self, width=ui_width/3)
         self.frame.grid(row=0, column=0)
         ##### Frame-2-1-1
@@ -276,6 +278,32 @@ class FrameCommonOperation(ctk.CTkFrame) :
 class FrameAutomatic(ctk.CTkFrame) :
     def __init__(self, master: Any, width: int = 200, height: int = 200):
         super().__init__(master, width, height)
+        
+        self.initUI()
+        
+    def initUI(self) :
+        self.frame = ctk.CTkFrame(self, width=ui_width/3)
+        self.frame.grid(row=0, column=1)
+
+        self.label = ctk.CTkLabel(self.frame, width = ui_width/3, text = 'Automatic Programs')
+        self.label.pack(pady = 5, anchor='n')
+
+        self.btn_add_section = ctk.CTkButton(self.frame, text = 'Add Section', command = self.add_section, width=ui_width/3, font=('consolas',12))
+        self.btn_add_section.pack(padx=0, pady=5)
+        
+        self.btn_change_section = ctk.CTkButton(self.frame, text="Change Sections", command=self.change_section, width=ui_width/3, font=('consolas',12))
+        self.btn_change_section.pack(padx=0, pady=5)
+        
+        self.btn_try_section = ctk.CTkButton(self.frame, text="Try Sections", command=self.try_section, width=ui_width/3, font=('consolas',12))
+        
+    def add_section(self) :
+        pass
+    
+    def change_section(self) :
+        pass
+    
+    def try_section(self) :
+        pass
 
         
 if __name__ == '__main__' :
