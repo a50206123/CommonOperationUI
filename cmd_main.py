@@ -33,7 +33,7 @@ def release_i(self) :
     selected_frames = self.etabs.Select.get(type_='Frame')
 
     for frame in selected_frames :
-        self.etabs.Frames.set_release(frame, quick='Mi')
+        self.etabs.Frames.assign_release(frame, quick='Mi')
 
     self.etabs.refresh()
 
@@ -50,7 +50,7 @@ def release_j(self) :
     selected_frames = self.etabs.Select.get(type_='Frame')
 
     for frame in selected_frames :
-        self.etabs.Frames.set_release(frame, quick='Mj')
+        self.etabs.Frames.assign_release(frame, quick='Mj')
 
     self.etabs.refresh()
     
@@ -67,7 +67,7 @@ def release_ij(self) :
     selected_frames = self.etabs.Select.get(type_='Frame')
 
     for frame in selected_frames :
-        self.etabs.Frames.set_release(frame, quick='Mij')
+        self.etabs.Frames.assign_release(frame, quick='Mij')
 
     self.etabs.refresh()
     
@@ -88,7 +88,7 @@ def reduction_torsion(self, reduction = 0.1) : # OK
         J_orig = self.etabs.Frames.get_modifier(unique)[3]
 
         if frame[0] == 'B' and J_orig != reduction :
-            self.etabs.Frames.set_modifier(unique, T = reduction)
+            self.etabs.Frames.assgin_modifier(unique, T = reduction)
     
     self.etabs.refresh()
     

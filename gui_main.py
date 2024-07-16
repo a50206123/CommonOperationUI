@@ -182,7 +182,7 @@ class FrameCommonOperation(ctk.CTkFrame) :
         selected_frames = etabs.Select.get(type_='Frame')
 
         for frame in selected_frames :
-            etabs.Frames.set_release(frame, quick='Mi')
+            etabs.Frames.assign_release(frame, quick='Mi')
 
         etabs.refresh()
 
@@ -195,7 +195,7 @@ class FrameCommonOperation(ctk.CTkFrame) :
         selected_frames = etabs.Select.get(type_='Frame')
 
         for frame in selected_frames :
-            etabs.Frames.set_release(frame, quick='Mj')
+            etabs.Frames.assign_release(frame, quick='Mj')
 
         etabs.refresh()
 
@@ -208,7 +208,7 @@ class FrameCommonOperation(ctk.CTkFrame) :
         selected_frames = etabs.Select.get(type_='Frame')
 
         for frame in selected_frames :
-            etabs.Frames.set_release(frame, quick='Mij')
+            etabs.Frames.assign_release(frame, quick='Mij')
 
         etabs.refresh()
         
@@ -226,7 +226,7 @@ class FrameCommonOperation(ctk.CTkFrame) :
             J_orig = etabs.Frames.get_modifier(unique)[3]
 
             if frame[0] == 'B' and J_orig != reduction :
-                etabs.Frames.set_modifier(unique, T = reduction)
+                etabs.Frames.assign_modifier(unique, T = reduction)
         
         etabs.refresh()
 
