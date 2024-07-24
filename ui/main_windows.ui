@@ -28,7 +28,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>491</width>
+      <width>391</width>
       <height>541</height>
      </rect>
     </property>
@@ -47,7 +47,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_common">
      <attribute name="title">
@@ -134,7 +134,7 @@
        <item>
         <widget class="QPushButton" name="pbtn_nonsway">
          <property name="text">
-          <string>PushButton</string>
+          <string>NonSway</string>
          </property>
         </widget>
        </item>
@@ -174,9 +174,9 @@
    <widget class="QLabel" name="lb_connection">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>420</x>
       <y>20</y>
-      <width>341</width>
+      <width>431</width>
       <height>61</height>
      </rect>
     </property>
@@ -191,12 +191,12 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pbtn_connection">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>420</x>
       <y>80</y>
-      <width>341</width>
+      <width>431</width>
       <height>31</height>
      </rect>
     </property>
@@ -219,9 +219,9 @@
    <widget class="QTextEdit" name="te_message">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>420</x>
       <y>120</y>
-      <width>341</width>
+      <width>431</width>
       <height>421</height>
      </rect>
     </property>
