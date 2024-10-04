@@ -1,8 +1,8 @@
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QTextEdit, QCheckBox, QRadioButton, QLineEdit
 
-from yc_etabs.etabs import ETABS
-from yc_etabs.apps.tedchu import TedChuMethods
+from etabs_api.etabs import ETABS
+from etabs_api.apps.tedchu import TedChuMethods
 
 from yc_print import *
 
