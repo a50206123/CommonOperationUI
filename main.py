@@ -1,8 +1,8 @@
 from PyQt5 import uic, QtCore
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QTextEdit, QCheckBox, QRadioButton, QLineEdit
 
-from yc_etabs_api.etabs import ETABS
-from yc_etabs_api.apps.tedchu import TedChuMethods
+from yc_etabs.etabs import ETABS
+from yc_etabs.apps.tedchu import TedChuMethods
 
 from yc_print import *
 
@@ -63,7 +63,10 @@ class MainWindow(QMainWindow):
         pbtns = [self.pbtn_releaseI, self.pbtn_releaseJ, self.pbtn_releaseIJ, self.pbtn_releaseNone, 
                  self.pbtn_torsionReduction, self.pbtn_nonsway, self.pbtn_modelChecker]
         for pbtn in pbtns :
-            pbtn.disconnect()
+            try :
+                pbtn.disconnect()
+            except :
+                continue
 
         self.isSelectAfterAssigning = self.cb_isSelectAfterAssigning.isChecked()
         isStart = self.isStart
